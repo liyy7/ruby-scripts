@@ -2,6 +2,7 @@
 # encoding: UTF-8
 
 require 'http'
+require 'awesome_print'
 
 Struct.new('Stock', :code, :name, :current_price, :current_diff_price, :current_diff_percentage)
 Struct.new('MyStock',
@@ -34,11 +35,26 @@ def get_stocks(stock_codes)
     .compact
 end
 
+def color_float(f)
+  s_f = sprintf "%.3f", f
+  case
+  when f > 0 then s_f.red
+  when f == 0 then s_f
+  when f < 0 then s_f.green
+  end
+end
+
 def format_stock(stock)
   additional_name_size = stock.name.split('').map { |c| c =~ /[a-zA-Z]/ }.compact.size
   # TODO: confirmation requires
   name_size = 10 + (additional_name_size > 0 ? 2 * additional_name_size - 1 : 0)
-  stock.instance_eval { sprintf "%#{name_size}s: %10.3f %10.3f %10.3f%%", name, current_price, current_diff_price, current_diff_percentage }
+  stock.instance_eval do
+    sprintf "%#{name_size}s: %10.3f %10.3f %21s%%",
+      name,
+      current_price,
+      current_diff_price,
+      color_float(current_diff_percentage)
+  end
 end
 
 def format_my_stock(stock)
@@ -46,12 +62,12 @@ def format_my_stock(stock)
   # TODO: confirmation requires
   name_size = 10 + (additional_name_size > 0 ? 2 * additional_name_size - 1 : 0)
   stock.instance_eval do
-    sprintf "%#{name_size}s: %10d %10.3f(%6.3f) %10.3f(%6.3f) %10.3f%%(%7.3f%%) %10.3f(%10.3f) %10.3f(%9.3f)",
+    sprintf "%#{name_size}s: %10d %10.3f(%6.3f) %10.3f(%6.3f) %21s%%(%18s%%) %10.3f(%10.3f) %10.3f(%9.3f)",
       name,
       amount,
       current_price, price,
       current_diff_price, diff_price,
-      current_diff_percentage, diff_percentage,
+      color_float(current_diff_percentage), color_float(diff_percentage),
       current_change, change,
       current_total, total
   end
