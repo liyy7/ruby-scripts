@@ -111,6 +111,8 @@ loop do
                                my_stock
                              end
                            )
+                           .sort_by(&:total)
+                           .reverse
     stock_output = my_stocks.map(&->(my_stock) { format_my_stock(my_stock) }).join("\n")
 
     system('clear')
@@ -133,7 +135,7 @@ loop do
       current_total, total
 
     sleep 3
-  rescue Errno::ENETDOWN, SocketError, Errno::ETIMEDOUT, Errno::ECONNREFUSED
+  rescue Errno::ENETDOWN, SocketError, Errno::ETIMEDOUT, Errno::ECONNREFUSED, IOError
     sleep 3
     retry
   rescue Interrupt
