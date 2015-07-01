@@ -62,7 +62,7 @@ def format_my_stock(stock)
   # TODO: confirmation requires
   name_size = 10 + (additional_name_size > 0 ? 2 * additional_name_size - 1 : 0)
   stock.instance_eval do
-    sprintf "%#{name_size}s: %10d %10.3f(%6.3f) %10.3f(%6.3f) %21s%%(%18s%%) %10.3f(%10.3f) %10.3f(%9.3f)",
+    sprintf "%#{name_size}s: %10d %10.3f(%7.3f) %10.3f(%7.3f) %21s%%(%18s%%) %10.3f(%10.3f) %10.3f(%9.3f)",
       name,
       amount,
       current_price, price,
@@ -120,7 +120,7 @@ loop do
     puts index_output
 
     puts
-    printf "%24s %14s %12s %15s %14s %13s\n", *%w(持仓 现价(成本) 差价(成本差价) 差价%(成本差价%) 总差价(成本总差价) 总持仓(成本总持仓))
+    printf "%24s %15s %13s %15s %14s %13s\n", *%w(持仓 现价(成本) 差价(成本差价) 差价%(成本差价%) 总差价(成本总差价) 总持仓(成本总持仓))
     puts stock_output
 
     puts
@@ -128,7 +128,7 @@ loop do
     current_change = my_stocks.reduce(0) { |sum, s| sum + s.current_change }
     total = my_stocks.reduce(0) { |sum, s| sum + s.total }
     current_total = my_stocks.reduce(0) { |sum, s| sum + s.current_total }
-    printf "%14s: %59.3f%%(%7.3f%%) %10.3f(%10.3f) %10.3f(%9.3f)\n",
+    printf "%14s: %61.3f%%(%7.3f%%) %10.3f(%10.3f) %10.3f(%9.3f)\n",
       'TOTAL',
       current_change * 100 / (current_total - current_change), change * 100 / total,
       current_change, change,
