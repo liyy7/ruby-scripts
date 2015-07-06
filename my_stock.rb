@@ -135,7 +135,7 @@ loop do
       current_total, total
 
     sleep 3
-  rescue Errno::ENETDOWN, SocketError, Errno::ETIMEDOUT, Errno::ECONNREFUSED, IOError
+  rescue Errno::ENETDOWN, SocketError, Errno::ETIMEDOUT, Errno::ECONNREFUSED, IOError, Errno::ENETUNREACH
     sleep 3
     retry
   rescue Interrupt
